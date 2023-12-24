@@ -1,7 +1,7 @@
 import 'package:filo_fire/models/vehicle_model.dart';
 import 'package:filo_fire/network/auth_operations.dart';
 import 'package:filo_fire/network/fleet_network.dart';
-import 'package:filo_fire/view/get_car/car_info/car_info.dart';
+import 'package:filo_fire/view/main_screen/tabs/car_list/get_car/car_info/car_info.dart';
 import 'package:flutter/material.dart';
 
 class CarList extends StatefulWidget {
@@ -34,10 +34,18 @@ class _CarListState extends State<CarList>
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasData) {
             return Scaffold(
-              body: ListView.builder(
-                itemCount: snapshot.data!.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return CarItem(car: snapshot.data![index]);
+              body: RefreshIndicator(
+                child: ListView.builder(
+                  itemCount: snapshot.data!.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return CarItem(car: snapshot.data![index]);
+                  },
+                ),
+                onRefresh: () {
+                  return Future(() => setState(() {
+                        _loadCars = FleetNetwork().getUserVehicles(
+                            AuthOperations().getCurrentUser()!.uid);
+                      }));
                 },
               ),
             );
@@ -67,11 +75,11 @@ class CarItem extends StatelessWidget {
       child: InkWell(
         onTap: () {
           Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => CarInfoView(
-                        vehicleModel: car,
-                      )));
+            context,
+            MaterialPageRoute(
+              builder: (context) => CarInfoView(carData: car),
+            ),
+          );
         },
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -86,7 +94,7 @@ class CarItem extends StatelessWidget {
           child: Center(
             child: Text(
               car.plate,
-              style: const TextStyle(fontSize: 30),
+              style: const TextStyle(fontSize: 30,),
             ),
           ),
         ),

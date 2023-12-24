@@ -1,9 +1,9 @@
 import 'package:filo_fire/network/auth_operations.dart';
-import 'package:filo_fire/view/add_car/AddCarView.dart';
+import 'package:filo_fire/view/main_screen/tabs/add_car/AddCarView.dart';
 import 'package:filo_fire/view/authanticate/Login/login_view.dart';
 import 'package:filo_fire/view/authanticate/forgot_password/forgot_password_view.dart';
 import 'package:filo_fire/view/authanticate/register/register_view.dart';
-import 'package:filo_fire/view/tabs/tab_view.dart';
+import 'package:filo_fire/view/main_screen/tab_view.dart';
 //flutter library
 import 'package:flutter/material.dart';
 //firebase Library
@@ -33,7 +33,6 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     user = FirebaseAuth.instance.currentUser;
-    print(user?.uid.toString());
   }
 
   @override
@@ -51,6 +50,13 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
+      ).copyWith(
+        cardTheme: CardTheme(color: Colors.red),
+        appBarTheme: AppBarTheme(backgroundColor: Colors.amberAccent),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.amber,
+        )),
       ),
       home: FutureBuilder<dynamic>(
         future: AuthOperations().isLoggedIn(),

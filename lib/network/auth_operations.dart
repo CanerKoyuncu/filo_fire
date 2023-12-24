@@ -5,12 +5,12 @@ class AuthOperations {
   late FirebaseAuth _firebaseAuth;
   late User user;
   AuthOperations() {
-    this._firebaseAuth = FirebaseAuth.instance;
+    _firebaseAuth = FirebaseAuth.instance;
   }
 
   Future isLoggedIn() async {
-    this.user = await _firebaseAuth.currentUser!;
-    if (this.user == null) {
+    user = _firebaseAuth.currentUser!;
+    if (user == null) {
       return false;
     }
     return true;
@@ -44,7 +44,7 @@ class AuthOperations {
 
       // Başarılı giriş, hata yok
     } on FirebaseAuthException catch (e) {
-      print(e.message); // Hata mesajını döndür
+      // Hata mesajını döndür
     }
   }
 

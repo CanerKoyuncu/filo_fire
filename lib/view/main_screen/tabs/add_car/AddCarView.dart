@@ -1,7 +1,7 @@
 import 'package:filo_fire/models/vehicle_model.dart';
 import 'package:filo_fire/network/auth_operations.dart';
 import 'package:filo_fire/network/fleet_network.dart';
-import 'package:filo_fire/view/authanticate/widget/CustomTextField.dart';
+import 'package:filo_fire/view/authanticate/widgets/CustomTextField.dart';
 import 'package:flutter/material.dart';
 
 class AddCarView extends StatefulWidget {

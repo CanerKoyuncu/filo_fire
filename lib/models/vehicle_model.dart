@@ -5,6 +5,7 @@ class VehicleModel {
   String model;
   String plate;
   String productionYear;
+  String? lastMaintanceDate;
   String color;
 
   VehicleModel({
@@ -14,8 +15,11 @@ class VehicleModel {
     required this.model,
     required this.plate,
     required this.productionYear,
+    this.lastMaintanceDate,
     required this.color,
   });
+
+  String? get getCarId => id == null ? id : "";
 
   factory VehicleModel.fromMap(Map<String, dynamic> map, String id) {
     return VehicleModel(
@@ -25,6 +29,7 @@ class VehicleModel {
       model: map['model'] ?? '',
       plate: map['plate'] ?? '',
       productionYear: map['productionYear'] ?? 0,
+      lastMaintanceDate: map['lastMaintanceDate'] ?? 0,
       color: map['color'] ?? '',
     );
   }
@@ -37,6 +42,7 @@ class VehicleModel {
       'model': model,
       'plate': plate,
       'productionYear': productionYear,
+      'lastMaintanceDate': lastMaintanceDate,
       'color': color,
     };
   }

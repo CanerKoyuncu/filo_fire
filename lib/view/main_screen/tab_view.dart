@@ -1,6 +1,7 @@
 import 'package:filo_fire/network/auth_operations.dart';
-import 'package:filo_fire/view/add_car/AddCarView.dart';
-import 'package:filo_fire/view/tabs/tabs/car_list/car_list.dart';
+import 'package:filo_fire/view/main_screen/tabs/add_car/AddCarView.dart';
+import 'package:filo_fire/view/main_screen/tabs/car_list/get_car/maintance_info/add_maintance_view.dart';
+import 'package:filo_fire/view/main_screen/tabs/car_list/car_list.dart';
 import 'package:flutter/material.dart';
 
 class CustomTabView extends StatefulWidget {
@@ -15,7 +16,7 @@ class _CustomTabViewState extends State<CustomTabView> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: 2,
       child: buildScaffoldBody(),
     );
   }
@@ -32,7 +33,6 @@ class _CustomTabViewState extends State<CustomTabView> {
         body: const TabBarView(
           children: [
             CarList(),
-            CarList(),
             AddCarView(),
           ],
         ),
@@ -46,15 +46,11 @@ class _CustomTabViewState extends State<CustomTabView> {
         tabs: [
           Tab(
             icon: Icon(Icons.car_crash),
-            text: "test",
+            text: "Araçlar",
           ),
           Tab(
             icon: Icon(Icons.abc),
-            text: "test",
-          ),
-          Tab(
-            icon: Icon(Icons.abc),
-            text: "test",
+            text: "Araç Ekle",
           ),
         ],
       ),

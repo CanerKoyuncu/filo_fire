@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:filo_fire/view/tabs/tab_view.dart';
+import 'package:filo_fire/view/main_screen/tab_view.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {

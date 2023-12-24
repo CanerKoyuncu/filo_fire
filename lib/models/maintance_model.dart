@@ -1,14 +1,14 @@
 class MaintanceModel {
   String? maintanceId;
-  String vehicleId;
+  String? vehicleId;
   String? maintanceType;
-  DateTime? maintanceDate;
+  String? maintanceDate;
   String? maintanceDescription;
-  double? maintanceCost;
+  String? maintanceCost;
 
   MaintanceModel({
     this.maintanceId,
-    required this.vehicleId,
+    this.vehicleId,
     this.maintanceType,
     this.maintanceDate,
     this.maintanceDescription,
