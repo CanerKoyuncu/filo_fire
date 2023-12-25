@@ -85,13 +85,49 @@ class FleetNetwork {
     }
   }
 
+  //Aracın driverID değişkenini değiştirir
+  Future<void> updateCarDriver(String carId, String driverId) async {
+    try {
+      await _firestore.collection('vehicles').doc(carId).update({
+        'driverID': driverId,
+      });
+    } catch (e) {
+      throw Exception("Error updating car driver: $e");
+    }
+  }
+
   //Driver ekle
 
-  Future<void> addDriver(DriverModel driverModel) async {
+  Future<String> addDriver(DriverModel driverModel) async {
     try {
-      await _firestore.collection('drivers').add(driverModel.toJson());
+      DocumentReference driverRef =
+          await _firestore.collection('drivers').add(driverModel.toJson());
+      String driverID = driverRef.id;
+      return driverID;
     } catch (e) {
       print("Hata: $e");
+      return '';
+    }
+  }
+
+  Future<DriverModel?> getDriverWithID(String driverID) async {
+    try {
+      QuerySnapshot<Map<String, dynamic>> querySnapshot = await _firestore
+          .collection('driver_records')
+          .where('driverID', isEqualTo: driverID)
+          .get();
+
+      querySnapshot.docs.map((doc) {
+        return DriverModel(
+            firstName: doc['firstName'],
+            lastName: doc['lastName'],
+            licenseNumber: doc['licenseNumber'],
+            licenseIssueDate: doc["licenseIssueDate"],
+            phoneNumber: doc['phoneNumber']);
+      });
+    } catch (e) {
+      print("Hata: $e");
+      return null;
     }
   }
 }

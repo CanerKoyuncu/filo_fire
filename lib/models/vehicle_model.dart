@@ -1,12 +1,14 @@
 class VehicleModel {
-  String? id;
+  String? id = '';
   String userId;
   String brand;
   String model;
   String plate;
   String productionYear;
-  String? lastMaintanceDate;
+  String? lastMaintanceDate = '';
   String color;
+  String? driverFirstName = '';
+  String? driverID = '';
 
   VehicleModel({
     this.id,
@@ -17,6 +19,8 @@ class VehicleModel {
     required this.productionYear,
     this.lastMaintanceDate,
     required this.color,
+    this.driverFirstName,
+    this.driverID,
   });
 
   String? get getCarId => id == null ? id : "";
@@ -31,6 +35,8 @@ class VehicleModel {
       productionYear: map['productionYear'] ?? 0,
       lastMaintanceDate: map['lastMaintanceDate'] ?? 0,
       color: map['color'] ?? '',
+      driverFirstName: map['driverFirstName'] ?? '',
+      driverID: map['driverID'] ?? '',
     );
   }
 
@@ -44,6 +50,8 @@ class VehicleModel {
       'productionYear': productionYear,
       'lastMaintanceDate': lastMaintanceDate,
       'color': color,
+      'driverFirstName': driverFirstName,
+      'driverID': driverID,
     };
   }
 }

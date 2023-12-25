@@ -1,9 +1,10 @@
 import 'package:filo_fire/network/auth_operations.dart';
-import 'package:filo_fire/view/main_screen/tabs/add_car/AddCarView.dart';
+
 import 'package:filo_fire/view/authanticate/Login/login_view.dart';
 import 'package:filo_fire/view/authanticate/forgot_password/forgot_password_view.dart';
 import 'package:filo_fire/view/authanticate/register/register_view.dart';
 import 'package:filo_fire/view/main_screen/tab_view.dart';
+import 'package:filo_fire/view/main_screen/tabs/add_car/AddCarView.dart';
 //flutter library
 import 'package:flutter/material.dart';
 //firebase Library
@@ -46,17 +47,23 @@ class _MyAppState extends State<MyApp> {
         "/forgotPasswordView": (context) => const ForgotPasswordView(),
         "/addCarView": (context) => const AddCarView(),
       },
-      title: 'Flutter - Parse Server',
+      title: 'Filo-Fire',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ).copyWith(
-        cardTheme: CardTheme(color: Colors.red),
-        appBarTheme: AppBarTheme(backgroundColor: Colors.amberAccent),
+        cardTheme: const CardTheme(color: Colors.red),
+        appBarTheme: const AppBarTheme(backgroundColor: Colors.amberAccent),
         elevatedButtonTheme: ElevatedButtonThemeData(
             style: ElevatedButton.styleFrom(
           backgroundColor: Colors.amber,
         )),
+        textTheme: const TextTheme().copyWith(
+          bodyMedium: const TextStyle(
+            fontSize: 18,
+            color: Colors.black,
+          ),
+        ),
       ),
       home: FutureBuilder<dynamic>(
         future: AuthOperations().isLoggedIn(),

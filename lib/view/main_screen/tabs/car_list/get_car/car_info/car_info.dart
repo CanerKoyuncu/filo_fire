@@ -1,5 +1,8 @@
+import 'package:filo_fire/models/driver_model.dart';
 import 'package:filo_fire/models/vehicle_model.dart';
 import 'package:filo_fire/network/fleet_network.dart';
+import 'package:filo_fire/view/main_screen/tabs/car_list/get_car/driver_info/add_driver_view.dart';
+import 'package:filo_fire/view/main_screen/tabs/car_list/get_car/driver_info/driver_view.dart';
 import 'package:filo_fire/view/main_screen/tabs/car_list/get_car/maintance_info/add_maintance_view.dart';
 import 'package:filo_fire/view/main_screen/tabs/car_list/get_car/maintance_info/maintances_of_car.dart';
 
@@ -19,9 +22,12 @@ class _CarInfoViewState extends State<CarInfoView>
   bool get wantKeepAlive => true;
 
   @override
-  Widget build(BuildContext context) {
-    String? carId = widget.carData.id;
+  initState() {
+    super.initState();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     super.build(context);
 
     return Scaffold(
@@ -30,12 +36,16 @@ class _CarInfoViewState extends State<CarInfoView>
         mainAxisSize: MainAxisSize.max,
         children: [
           CarInfos(widget.carData),
-          Text("Geçmiş Bakımlar", style: TextStyle().copyWith(fontSize: 25)),
+          Text("Geçmiş Bakımlar",
+              style: const TextStyle().copyWith(fontSize: 25)),
           Flexible(
             fit: FlexFit.tight,
             child: Container(
-                height: 442,
-                child: MaintancesView(carId: widget.carData.id.toString())),
+              height: 442,
+              child: MaintancesView(
+                carId: widget.carData.id.toString(),
+              ),
+            ),
           )
         ],
       ),
@@ -64,29 +74,69 @@ class _CarInfoViewState extends State<CarInfoView>
           children: [
             Row(
               children: [
-                const Flexible(
-                  flex: 2,
-                  child: Column(
-                    children: [
-                      Text("Plaka:"),
-                      Text("Marka:"),
-                      Text("Model:"),
-                      Text("Son bakım tarihi:"),
-                      Text("Renk:"),
-                    ],
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Flexible(
+                    flex: 2,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Plaka:", style: TextStyle(fontSize: 25)),
+                        Text("Marka:", style: TextStyle(fontSize: 25)),
+                        Text("Model:", style: TextStyle(fontSize: 25)),
+                        Text("Son bakım tarihi:",
+                            style: TextStyle(fontSize: 25)),
+                        Text("Renk:", style: TextStyle(fontSize: 25)),
+                      ],
+                    ),
                   ),
                 ),
                 Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(vehicleModel.plate),
-                    Text(vehicleModel.brand),
-                    Text(vehicleModel.model),
-                    Text(vehicleModel.lastMaintanceDate ?? ""),
-                    Text(vehicleModel.color),
+                    Text(vehicleModel.plate,
+                        style: const TextStyle(fontSize: 25)),
+                    Text(vehicleModel.brand,
+                        style: const TextStyle(fontSize: 25)),
+                    Text(vehicleModel.model,
+                        style: const TextStyle(fontSize: 25)),
+                    Text(vehicleModel.lastMaintanceDate ?? "",
+                        style: const TextStyle(fontSize: 25)),
+                    Text(vehicleModel.color,
+                        style: const TextStyle(fontSize: 25)),
                   ],
                 ),
               ],
             ),
+            ElevatedButton(
+              onPressed: () async {
+                if (widget.carData.driverFirstName != null) {
+                  DriverModel? driverModel = await FleetNetwork()
+                      .getDriverWithID(widget.carData.driverID!);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          DriverView(driverData: driverModel!),
+                    ),
+                  );
+                } else {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          AddDriverView(vehicleModel: vehicleModel),
+                    ),
+                  );
+                }
+              },
+              child: Row(
+                children: [
+                  const Icon(Icons.person),
+                  Text(widget.carData.driverFirstName ?? ''),
+                ],
+              ),
+            )
           ],
         ),
       ),

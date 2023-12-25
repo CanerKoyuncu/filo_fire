@@ -4,15 +4,18 @@ class DriverModel {
   String licenseNumber;
   DateTime licenseIssueDate;
   String phoneNumber;
+  String? driverID;
   // Add other driver details as needed.
 
-  DriverModel({
-    required this.firstName,
-    required this.lastName,
-    required this.licenseNumber,
-    required this.licenseIssueDate,
-    required this.phoneNumber,
-  });
+  String? get getDriverFirstName => firstName == null ? firstName : "";
+
+  DriverModel(
+      {required this.firstName,
+      required this.lastName,
+      required this.licenseNumber,
+      required this.licenseIssueDate,
+      required this.phoneNumber,
+      this.driverID});
 
   factory DriverModel.fromJson(Map<String, dynamic> json) {
     return DriverModel(
@@ -21,6 +24,7 @@ class DriverModel {
       licenseNumber: json['licenseNumber'],
       licenseIssueDate: DateTime.parse(json['licenseIssueDate']),
       phoneNumber: json['phoneNumber'],
+      driverID: json['driverID'],
     );
   }
 
@@ -31,6 +35,7 @@ class DriverModel {
       'licenseNumber': licenseNumber,
       'licenseIssueDate': licenseIssueDate.toIso8601String(),
       'phoneNumber': phoneNumber,
+      'driverID': driverID,
     };
   }
 }

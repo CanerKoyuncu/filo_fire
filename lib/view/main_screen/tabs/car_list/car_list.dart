@@ -63,7 +63,6 @@ class _CarListState extends State<CarList>
 }
 
 class CarItem extends StatelessWidget {
-  late Widget routePage;
   late VehicleModel car;
 
   CarItem({super.key, required this.car});
@@ -94,7 +93,9 @@ class CarItem extends StatelessWidget {
           child: Center(
             child: Text(
               car.plate,
-              style: const TextStyle(fontSize: 30,),
+              style: const TextStyle(
+                fontSize: 30,
+              ),
             ),
           ),
         ),

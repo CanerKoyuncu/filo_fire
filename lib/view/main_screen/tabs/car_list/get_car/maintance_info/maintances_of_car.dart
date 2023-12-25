@@ -40,42 +40,7 @@ class _MaintancesViewState extends State<MaintancesView> {
                 shrinkWrap: true,
                 itemCount: snapshot.data!.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return Card(
-                    child: Row(
-                      children: [
-                        const Flexible(
-                          flex: 2,
-                          child: Column(
-                            children: [
-                              Text("Bakım Tipi:"),
-                              Text("Bakım Tarihi:"),
-                              Text("Bakım Açıklaması:"),
-                              Text("Bakım Ücreti:"),
-                            ],
-                          ),
-                        ),
-                        const Spacer(
-                          flex: 1,
-                        ),
-                        Flexible(
-                          flex: 2,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(snapshot.data?[index].maintanceType
-                                  as String),
-                              Text(snapshot.data?[index].maintanceDate
-                                  as String),
-                              Text(snapshot.data?[index].maintanceDescription
-                                  as String),
-                              Text(snapshot.data?[index].maintanceCost
-                                  as String),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  );
+                  return _maintanceCard(snapshot, index);
                 },
               ),
             );
@@ -88,6 +53,75 @@ class _MaintancesViewState extends State<MaintancesView> {
           );
         }
       },
+    );
+  }
+
+  Card old(AsyncSnapshot<List<MaintanceModel>?> snapshot, int index) {
+    return Card(
+      child: Row(
+        children: [
+          const Flexible(
+            flex: 2,
+            child: Column(
+              children: [
+                Text("Bakım Tipi:"),
+                Text("Bakım Tarihi:"),
+                Text("Bakım Açıklaması:"),
+                Text("Bakım Ücreti:"),
+              ],
+            ),
+          ),
+          const Spacer(
+            flex: 1,
+          ),
+          Flexible(
+            flex: 2,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(snapshot.data?[index].maintanceType as String),
+                Text(snapshot.data?[index].maintanceDate as String),
+                Text(snapshot.data?[index].maintanceDescription as String),
+                Text(snapshot.data?[index].maintanceCost as String),
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _maintanceCard(
+      AsyncSnapshot<List<MaintanceModel>?> snapshot, int index) {
+    return Card(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _customMaintanceRow(
+              "Bakım Tipi:", snapshot.data?[index].maintanceType as String),
+          _customMaintanceRow(
+              "Bakım tarihi:", snapshot.data?[index].maintanceDate as String),
+          _customMaintanceRow("Bakım Açıklaması:",
+              snapshot.data?[index].maintanceDescription as String),
+          _customMaintanceRow(
+              "Bakım Maliyeti:", snapshot.data?[index].maintanceCost as String),
+        ],
+      ),
+    );
+  }
+
+  Widget _customMaintanceRow(String title, String value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Expanded(child: Text(title)),
+        Container(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            value,
+          ),
+        )
+      ],
     );
   }
 }
