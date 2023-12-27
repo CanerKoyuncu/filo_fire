@@ -1,14 +1,14 @@
 class VehicleModel {
-  String? id = '';
+  String? id;
   String userId;
   String brand;
   String model;
   String plate;
   String productionYear;
-  String? lastMaintanceDate = '';
+  String? lastMaintanceDate;
   String color;
-  String? driverFirstName = '';
-  String? driverID = '';
+  String? driverFirstName;
+  String? driverID;
 
   VehicleModel({
     this.id,

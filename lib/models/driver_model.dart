@@ -1,13 +1,11 @@
 class DriverModel {
-  String firstName;
+  String firstName = '';
   String lastName;
   String licenseNumber;
   DateTime licenseIssueDate;
   String phoneNumber;
   String? driverID;
   // Add other driver details as needed.
-
-  String? get getDriverFirstName => firstName == null ? firstName : "";
 
   DriverModel(
       {required this.firstName,
@@ -17,7 +15,8 @@ class DriverModel {
       required this.phoneNumber,
       this.driverID});
 
-  factory DriverModel.fromJson(Map<String, dynamic> json) {
+  factory DriverModel.fromJson(Object json, String id) {
+    json = json as Map<String, dynamic>;
     return DriverModel(
       firstName: json['firstName'],
       lastName: json['lastName'],

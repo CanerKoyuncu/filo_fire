@@ -25,6 +25,7 @@ class FleetNetwork {
           plate: doc["plate"],
           productionYear: doc["productionYear"],
           color: doc["color"],
+          driverID: doc["driverID"],
         );
       }).toList();
 
@@ -86,7 +87,10 @@ class FleetNetwork {
   }
 
   //Aracın driverID değişkenini değiştirir
-  Future<void> updateCarDriver(String carId, String driverId) async {
+  Future<void> updateCarDriver(
+    String carId,
+    String driverId,
+  ) async {
     try {
       await _firestore.collection('vehicles').doc(carId).update({
         'driverID': driverId,
@@ -112,22 +116,33 @@ class FleetNetwork {
 
   Future<DriverModel?> getDriverWithID(String driverID) async {
     try {
-      QuerySnapshot<Map<String, dynamic>> querySnapshot = await _firestore
-          .collection('driver_records')
-          .where('driverID', isEqualTo: driverID)
-          .get();
+      DocumentSnapshot querySnapshot =
+          await _firestore.collection('drivers').doc(driverID).get();
 
-      querySnapshot.docs.map((doc) {
-        return DriverModel(
-            firstName: doc['firstName'],
-            lastName: doc['lastName'],
-            licenseNumber: doc['licenseNumber'],
-            licenseIssueDate: doc["licenseIssueDate"],
-            phoneNumber: doc['phoneNumber']);
+      var doc = querySnapshot.data();
+      return DriverModel.fromJson(doc!, driverID);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  //Aracın driverID değişkenini değiştirir
+
+  Future<void> updateDriverData(
+    //TODO: sıkıntılı bir durum dolayısıyla güncelleme yaparken sıkıntı çıkıyor.
+    String driverID,
+    DriverModel driverModel,
+  ) async {
+    try {
+      await _firestore.collection('drivers').doc(driverID).update({
+        "firstName": driverModel.firstName,
+        "lastName": driverModel.lastName,
+        "licenseIssueDate": driverModel.licenseIssueDate,
+        "licebseNumber": driverModel.licenseNumber,
+        "phoneNumber": driverModel.phoneNumber,
       });
     } catch (e) {
-      print("Hata: $e");
-      return null;
+      throw Exception("Error updating car driver: $e");
     }
   }
 }

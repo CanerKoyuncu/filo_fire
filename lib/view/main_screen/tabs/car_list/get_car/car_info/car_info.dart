@@ -20,9 +20,12 @@ class _CarInfoViewState extends State<CarInfoView>
     with AutomaticKeepAliveClientMixin<CarInfoView> {
   @override
   bool get wantKeepAlive => true;
+  late Future<DriverModel?> _driver;
 
   @override
-  initState() {
+  void initState() {
+    _driver =
+        FleetNetwork().getDriverWithID(widget.carData.driverID.toString());
     super.initState();
   }
 
@@ -40,8 +43,8 @@ class _CarInfoViewState extends State<CarInfoView>
               style: const TextStyle().copyWith(fontSize: 25)),
           Flexible(
             fit: FlexFit.tight,
-            child: Container(
-              height: 442,
+            child: SizedBox(
+              height: double.maxFinite,
               child: MaintancesView(
                 carId: widget.carData.id.toString(),
               ),
@@ -66,78 +69,88 @@ class _CarInfoViewState extends State<CarInfoView>
   }
 
   Widget CarInfos(VehicleModel vehicleModel) {
-    return Card(
-      margin: const EdgeInsets.all(10),
-      child: Padding(
-        padding: const EdgeInsets.all(10),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Flexible(
-                    flex: 2,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("Plaka:", style: TextStyle(fontSize: 25)),
-                        Text("Marka:", style: TextStyle(fontSize: 25)),
-                        Text("Model:", style: TextStyle(fontSize: 25)),
-                        Text("Son bakım tarihi:",
-                            style: TextStyle(fontSize: 25)),
-                        Text("Renk:", style: TextStyle(fontSize: 25)),
-                      ],
+    return FutureBuilder(
+      future: _driver,
+      builder: (context, snapshot) => Card(
+        margin: const EdgeInsets.all(10),
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Flexible(
+                      flex: 2,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Plaka:", style: TextStyle(fontSize: 25)),
+                          Text("Marka:", style: TextStyle(fontSize: 25)),
+                          Text("Model:", style: TextStyle(fontSize: 25)),
+                          Text("Son bakım tarihi:",
+                              style: TextStyle(fontSize: 25)),
+                          Text("Renk:", style: TextStyle(fontSize: 25)),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(vehicleModel.plate,
-                        style: const TextStyle(fontSize: 25)),
-                    Text(vehicleModel.brand,
-                        style: const TextStyle(fontSize: 25)),
-                    Text(vehicleModel.model,
-                        style: const TextStyle(fontSize: 25)),
-                    Text(vehicleModel.lastMaintanceDate ?? "",
-                        style: const TextStyle(fontSize: 25)),
-                    Text(vehicleModel.color,
-                        style: const TextStyle(fontSize: 25)),
-                  ],
-                ),
-              ],
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                if (widget.carData.driverFirstName != null) {
-                  DriverModel? driverModel = await FleetNetwork()
-                      .getDriverWithID(widget.carData.driverID!);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          DriverView(driverData: driverModel!),
-                    ),
-                  );
-                } else {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          AddDriverView(vehicleModel: vehicleModel),
-                    ),
-                  );
-                }
-              },
-              child: Row(
-                children: [
-                  const Icon(Icons.person),
-                  Text(widget.carData.driverFirstName ?? ''),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(vehicleModel.plate,
+                          style: const TextStyle(fontSize: 25)),
+                      Text(vehicleModel.brand,
+                          style: const TextStyle(fontSize: 25)),
+                      Text(vehicleModel.model,
+                          style: const TextStyle(fontSize: 25)),
+                      Text(vehicleModel.lastMaintanceDate ?? "",
+                          style: const TextStyle(fontSize: 25)),
+                      Text(vehicleModel.color,
+                          style: const TextStyle(fontSize: 25)),
+                    ],
+                  ),
                 ],
               ),
-            )
-          ],
+              ElevatedButton(
+                onPressed: () async {
+                  if (snapshot.data != null) {
+                    DriverModel? driverModel = await FleetNetwork()
+                        .getDriverWithID(widget.carData.driverID!);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DriverView(
+                          driverData: driverModel!,
+                          vehicleModel: vehicleModel,
+                        ),
+                      ),
+                    );
+                  } else {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            AddDriverView(vehicleModel: vehicleModel),
+                      ),
+                    );
+                  }
+                },
+                child: Row(
+                  children: [
+                    const Icon(Icons.person),
+                    //TODO: olması gerektiği şekilde çalışmıyor.
+                    Text(snapshot.hasData == false
+                        ? 'Sürücü ekleyin'
+                        : snapshot.data!.firstName +
+                            " " +
+                            snapshot.data!.lastName),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
