@@ -3,7 +3,7 @@ import 'package:filo_fire/network/auth_operations.dart';
 import 'package:filo_fire/view/authanticate/Login/login_view.dart';
 import 'package:filo_fire/view/authanticate/forgot_password/forgot_password_view.dart';
 import 'package:filo_fire/view/authanticate/register/register_view.dart';
-import 'package:filo_fire/view/main_screen/tab_view.dart';
+import 'package:filo_fire/view/main_screen/home_view.dart';
 import 'package:filo_fire/view/main_screen/tabs/add_car/AddCarView.dart';
 //flutter library
 import 'package:flutter/material.dart';
@@ -41,7 +41,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       routes: {
-        "/tabView": (context) => const CustomTabView(),
+        "/tabView": (context) => const HomeView(),
         "/loginView": (context) => const LoginView(),
         "/registerView": (context) => const RegisterView(),
         "/forgotPasswordView": (context) => const ForgotPasswordView(),
@@ -55,9 +55,10 @@ class _MyAppState extends State<MyApp> {
         cardTheme: const CardTheme(color: Colors.red),
         appBarTheme: const AppBarTheme(backgroundColor: Colors.amberAccent),
         elevatedButtonTheme: ElevatedButtonThemeData(
-            style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.amber,
-        )),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.amber,
+          ),
+        ),
         textTheme: const TextTheme().copyWith(
           bodyMedium: const TextStyle(
             fontSize: 18,
@@ -82,7 +83,7 @@ class _MyAppState extends State<MyApp> {
               );
             default:
               if (snapshot.data == true) {
-                return const CustomTabView();
+                return const HomeView();
               } else {
                 return const LoginView();
               }

@@ -40,6 +40,7 @@ class _AddCarViewState extends State<AddCarView> {
     }
 
     return Scaffold(
+      appBar: AppBar(title: Text("Araç Ekle")),
       body: SingleChildScrollView(
         child: Column(
           children: [

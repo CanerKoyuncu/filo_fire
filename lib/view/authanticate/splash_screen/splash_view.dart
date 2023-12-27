@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:filo_fire/view/main_screen/tab_view.dart';
+import 'package:filo_fire/view/main_screen/home_view.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -17,7 +17,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Timer(
         const Duration(seconds: 5),
         () => Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => const CustomTabView())));
+            MaterialPageRoute(builder: (context) => const HomeView())));
   }
 
   @override
