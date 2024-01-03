@@ -23,11 +23,6 @@ class _LoginViewState extends State<LoginView> {
             children: [
               Column(
                 children: [
-                  SizedBox(
-                    height: 200,
-                    child: Image.network(
-                        "http://blog.back4app.com/wp-content/uploads/2017/11/logo-b4a-1-768x175-1.png"),
-                  ),
                   const Center(
                     child: Text(
                       "Giriş yapmak için formu doldurunuz.",
@@ -46,7 +41,6 @@ class _LoginViewState extends State<LoginView> {
                         print("user obj");
                         AuthOperations().signIn(context, controllerEmail.text,
                             controllerPassword.text);
-                        Navigator.popAndPushNamed(context, "/tabView");
                       },
                       child: const Text("data"))
                 ],

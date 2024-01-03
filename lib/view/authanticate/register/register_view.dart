@@ -29,11 +29,6 @@ class RegisterViewState extends State<RegisterView> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  SizedBox(
-                    height: 200,
-                    child: Image.network(
-                        "http://blog.back4app.com/wp-content/uploads/2017/11/logo-b4a-1-768x175-1.png"),
-                  ),
                   const Center(
                     child: Text(
                       "Kayıt olmak için aşağıdaki formu doldurunuz.",

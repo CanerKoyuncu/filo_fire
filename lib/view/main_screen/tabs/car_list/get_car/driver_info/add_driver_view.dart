@@ -33,7 +33,7 @@ class _AddDriverViewState extends State<AddDriverView> {
           contollerDriverFirstName = controllers[0];
           controllerDriverLastName = controllers[1];
           controllerDriverLicenseNumber = controllers[2];
-          controllerPhoneNumber = controllers[4];
+          controllerPhoneNumber = controllers[3];
           selectedDate = picked;
         });
       }
@@ -56,6 +56,9 @@ class _AddDriverViewState extends State<AddDriverView> {
               myController: controllerDriverLicenseNumber,
               hintText: "Sürücünün ehliyet numarası",
             ),
+            CustomTextField(
+                myController: controllerPhoneNumber,
+                hintText: "Sürücünün telefon numarası"),
             Center(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -86,9 +89,6 @@ class _AddDriverViewState extends State<AddDriverView> {
                 ],
               ),
             ),
-            CustomTextField(
-                myController: controllerPhoneNumber,
-                hintText: "Sürücünün telefon numarası"),
           ],
         ),
       ),

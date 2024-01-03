@@ -78,7 +78,7 @@ class _AddCarViewState extends State<AddCarView> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          FleetNetwork().addVehicle(
+          await FleetNetwork().addVehicle(
             VehicleModel(
               userId: AuthOperations().getCurrentUser()!.uid,
               brand: controllerBrand.text,
@@ -88,6 +88,7 @@ class _AddCarViewState extends State<AddCarView> {
               color: controllerColor.text,
             ),
           );
+          Navigator.pop(context);
         },
         child: const Icon(Icons.save),
       ),

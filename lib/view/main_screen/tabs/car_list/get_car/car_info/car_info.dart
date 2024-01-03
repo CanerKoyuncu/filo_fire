@@ -1,4 +1,5 @@
 import 'package:filo_fire/models/driver_model.dart';
+import 'package:filo_fire/models/maintance_model.dart';
 import 'package:filo_fire/models/vehicle_model.dart';
 import 'package:filo_fire/network/fleet_network.dart';
 import 'package:filo_fire/view/main_screen/tabs/car_list/get_car/driver_info/add_driver_view.dart';
@@ -21,9 +22,12 @@ class _CarInfoViewState extends State<CarInfoView>
   @override
   bool get wantKeepAlive => true;
   late Future<DriverModel?> _driver;
+  late Future<List<MaintanceModel?>?> _maintances;
 
   @override
   void initState() {
+    _maintances = FleetNetwork()
+        .getmaintanceHistoryByVehicleId(widget.carData.id.toString());
     _driver =
         FleetNetwork().getDriverWithID(widget.carData.driverID.toString());
     super.initState();
@@ -34,28 +38,31 @@ class _CarInfoViewState extends State<CarInfoView>
     super.build(context);
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Car details")),
-      body: Column(
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          CarInfos(widget.carData),
-          Text("Geçmiş Bakımlar",
-              style: const TextStyle().copyWith(fontSize: 25)),
-          Flexible(
-            fit: FlexFit.tight,
-            child: SizedBox(
-              height: double.maxFinite,
-              child: MaintancesView(
-                carId: widget.carData.id.toString(),
+      appBar: AppBar(title: const Text("Araç Hakkında")),
+      body: FutureBuilder(
+        future: _maintances,
+        builder: (context, snapshot) => Column(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            CarInfos(widget.carData),
+            Text("Geçmiş Bakımlar",
+                style: const TextStyle().copyWith(fontSize: 25)),
+            Flexible(
+              fit: FlexFit.tight,
+              child: SizedBox(
+                height: double.maxFinite,
+                child: MaintancesView(
+                  maintances: snapshot.data,
+                ),
               ),
             ),
-          )
-        ],
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.car_repair),
-        onPressed: () {
-          Navigator.push(
+        onPressed: () async {
+          await Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => AddMaintanceView(
@@ -63,6 +70,10 @@ class _CarInfoViewState extends State<CarInfoView>
               ),
             ),
           );
+          setState(() {
+            _maintances = FleetNetwork()
+                .getmaintanceHistoryByVehicleId(widget.carData.id.toString());
+          });
         },
       ),
     );
@@ -122,19 +133,24 @@ class _CarInfoViewState extends State<CarInfoView>
                       context,
                       MaterialPageRoute(
                         builder: (context) => DriverView(
-                          driverData: driverModel!,
-                          vehicleModel: vehicleModel,
+                          carID: widget.carData.id.toString(),
+                          driverID: widget.carData.driverID.toString(),
                         ),
                       ),
                     );
                   } else {
-                    Navigator.push(
+                    await Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) =>
                             AddDriverView(vehicleModel: vehicleModel),
                       ),
                     );
+                    setState(() async {
+                      _driver = (await FleetNetwork()
+                              .getDriverWithID(widget.carData.driverID!))
+                          as Future<DriverModel?>;
+                    });
                   }
                 },
                 child: Row(

@@ -53,6 +53,7 @@ class _AddCarViewState extends State<AddMaintanceView> {
               maintanceType: controllerType.text,
             ),
           );
+          Navigator.pop(context);
         },
         child: const Icon(Icons.save),
       ),

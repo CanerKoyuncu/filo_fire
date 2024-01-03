@@ -36,6 +36,19 @@ class FleetNetwork {
     }
   }
 
+  Future<VehicleModel?> getCarDataWithID(String carID) async {
+    try {
+      DocumentSnapshot querySnapshot =
+          await _firestore.collection('vehicles').doc(carID).get();
+
+      var doc = querySnapshot.data();
+      print("object1 data: ${doc} ");
+      return VehicleModel.fromMap(doc!, carID);
+    } catch (e) {
+      return null;
+    }
+  }
+
   // Araç ID'sine göre bakım geçmişini getir
   Future<List<MaintanceModel>> getmaintanceHistoryByVehicleId(
       String vehicleId) async {
@@ -86,6 +99,18 @@ class FleetNetwork {
     }
   }
 
+  //Araç ile ilgili tüm verileri siler(araç, sürücü ve bakım kayıtları dahil)
+
+  Future<void> deleteCarData(
+    String carId,
+  ) async {
+    try {
+      await _firestore.collection('vehicles').doc(carId).delete();
+    } catch (e) {
+      throw Exception("Error updating car driver: $e");
+    }
+  }
+
   //Aracın driverID değişkenini değiştirir
   Future<void> updateCarDriver(
     String carId,
@@ -114,6 +139,23 @@ class FleetNetwork {
     }
   }
 
+//Sürücü datasını siler
+
+  Future<void> deleteDriverData(
+    String vehicleID,
+  ) async {
+    try {
+      VehicleModel vehicle = await getCarDataWithID(vehicleID) as VehicleModel;
+
+      await _firestore.collection('drivers').doc(vehicle.driverID).delete();
+      vehicle.driverID = null;
+
+      updateCarDriver(vehicleID.toString(), "");
+    } catch (e) {
+      throw Exception("Error deleting car driver: $e");
+    }
+  }
+
   Future<DriverModel?> getDriverWithID(String driverID) async {
     try {
       DocumentSnapshot querySnapshot =
@@ -134,13 +176,10 @@ class FleetNetwork {
     DriverModel driverModel,
   ) async {
     try {
-      await _firestore.collection('drivers').doc(driverID).update({
-        "firstName": driverModel.firstName,
-        "lastName": driverModel.lastName,
-        "licenseIssueDate": driverModel.licenseIssueDate,
-        "licebseNumber": driverModel.licenseNumber,
-        "phoneNumber": driverModel.phoneNumber,
-      });
+      await _firestore
+          .collection('drivers')
+          .doc(driverID)
+          .update(driverModel.toJson());
     } catch (e) {
       throw Exception("Error updating car driver: $e");
     }

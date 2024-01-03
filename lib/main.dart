@@ -3,8 +3,10 @@ import 'package:filo_fire/network/auth_operations.dart';
 import 'package:filo_fire/view/authanticate/Login/login_view.dart';
 import 'package:filo_fire/view/authanticate/forgot_password/forgot_password_view.dart';
 import 'package:filo_fire/view/authanticate/register/register_view.dart';
+import 'package:filo_fire/view/authanticate/splash_screen/splash_view.dart';
 import 'package:filo_fire/view/main_screen/home_view.dart';
-import 'package:filo_fire/view/main_screen/tabs/add_car/AddCarView.dart';
+import 'package:filo_fire/view/main_screen/tabs/car_list/car_list.dart';
+import 'package:filo_fire/view/main_screen/tabs/car_list/get_car/car_info/AddCarView.dart';
 //flutter library
 import 'package:flutter/material.dart';
 //firebase Library
@@ -46,6 +48,7 @@ class _MyAppState extends State<MyApp> {
         "/registerView": (context) => const RegisterView(),
         "/forgotPasswordView": (context) => const ForgotPasswordView(),
         "/addCarView": (context) => const AddCarView(),
+        "/carListView": (context) => const CarList(),
       },
       title: 'Filo-Fire',
       theme: ThemeData(
@@ -66,30 +69,7 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
       ),
-      home: FutureBuilder<dynamic>(
-        future: AuthOperations().isLoggedIn(),
-        builder: (context, snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.none:
-            case ConnectionState.waiting:
-              return const Scaffold(
-                body: Center(
-                  child: SizedBox(
-                    width: 100,
-                    height: 100,
-                    child: CircularProgressIndicator(),
-                  ),
-                ),
-              );
-            default:
-              if (snapshot.data == true) {
-                return const HomeView();
-              } else {
-                return const LoginView();
-              }
-          }
-        },
-      ),
+      home: SplashScreen(),
     );
   }
 }

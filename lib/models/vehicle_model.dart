@@ -1,3 +1,5 @@
+import 'dart:core';
+
 class VehicleModel {
   String? id;
   String userId;
@@ -25,7 +27,8 @@ class VehicleModel {
 
   String? get getCarId => id == null ? id : "";
 
-  factory VehicleModel.fromMap(Map<String, dynamic> map, String id) {
+  factory VehicleModel.fromMap(Object map, String id) {
+    map = map as Map<String, dynamic>;
     return VehicleModel(
       id: map["id"] ?? '',
       userId: map['userId'] ?? '',
@@ -33,7 +36,7 @@ class VehicleModel {
       model: map['model'] ?? '',
       plate: map['plate'] ?? '',
       productionYear: map['productionYear'] ?? 0,
-      lastMaintanceDate: map['lastMaintanceDate'] ?? 0,
+      lastMaintanceDate: map['lastMaintanceDate'] ?? "",
       color: map['color'] ?? '',
       driverFirstName: map['driverFirstName'] ?? '',
       driverID: map['driverID'] ?? '',

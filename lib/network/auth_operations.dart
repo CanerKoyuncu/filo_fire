@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthOperations {
   late FirebaseAuth _firebaseAuth;
@@ -10,9 +11,6 @@ class AuthOperations {
 
   Future isLoggedIn() async {
     user = _firebaseAuth.currentUser!;
-    if (user == null) {
-      return false;
-    }
     return true;
   }
 
@@ -43,7 +41,7 @@ class AuthOperations {
       );
 
       // Başarılı giriş, hata yok
-    } on FirebaseAuthException catch (e) {
+    } on FirebaseAuthException {
       // Hata mesajını döndür
     }
   }
@@ -66,5 +64,32 @@ class AuthOperations {
   // Şu anki oturum açmış kullanıcıyı al
   User? getCurrentUser() {
     return _firebaseAuth.currentUser;
+  }
+
+  Future<dynamic> signInWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+      final GoogleSignInAuthentication? googleAuth =
+          await googleUser?.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken,
+      );
+
+      return await FirebaseAuth.instance.signInWithCredential(credential);
+    } on Exception {
+      // TODO
+    }
+  }
+
+  Future<bool> signOutFromGoogle() async {
+    try {
+      await FirebaseAuth.instance.signOut();
+      return true;
+    } on Exception catch (_) {
+      return false;
+    }
   }
 }

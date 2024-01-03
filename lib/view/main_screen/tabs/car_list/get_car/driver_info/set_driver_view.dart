@@ -5,16 +5,17 @@ import 'package:filo_fire/view/authanticate/widgets/CustomTextField.dart';
 import 'package:flutter/material.dart';
 
 class SetDriverView extends StatefulWidget {
-  late VehicleModel vehicleModel;
-
+  VehicleModel? vehicleModel;
+  String? driverID;
   String? firstName;
   String? lastName;
   String? licenseNumber;
   String? phoneNumber;
   DateTime? licenseIssueDate;
   SetDriverView({
+    this.driverID,
     super.key,
-    required this.vehicleModel,
+    this.vehicleModel,
     this.firstName,
     this.lastName,
     this.licenseNumber,
@@ -33,23 +34,29 @@ class _SetDriverViewState extends State<SetDriverView> {
   var controllerLicenseIssueDate = TextEditingController();
   var controllerPhoneNumber = TextEditingController();
   DateTime selectedDate = DateTime.now();
+
   @override
   void initState() {
-    //TODO: Güncelleme yapmak için uygun hale getirmemiz gerek.
-    if (widget.firstName != null) {
-      contollerDriverFirstName.text = widget.firstName.toString();
-    }
-    if (widget.lastName != null) {
-      controllerDriverLastName.text = widget.lastName.toString();
-    }
-    if (widget.licenseNumber != null) {
-      controllerDriverLicenseNumber.text = widget.licenseNumber.toString();
-    }
-    if (widget.phoneNumber != null) {
-      controllerPhoneNumber.text = widget.phoneNumber.toString();
-    }
-
     super.initState();
+    //TODO: veri çekip bunları controllerlara vermemiz gerek ama düzgün çalışmıyor
+    var vehicle = FleetNetwork()
+        .getDriverWithID(widget.driverID.toString())
+        .then((value) {
+      if (widget.firstName != null) {
+        contollerDriverFirstName.text = value.toString();
+      }
+      if (widget.lastName != null) {
+        controllerDriverLastName.text = value.toString();
+      }
+      if (widget.licenseNumber != null) {
+        controllerDriverLicenseNumber.text = value.toString();
+      }
+      if (widget.phoneNumber != null) {
+        controllerPhoneNumber.text = value.toString();
+      }
+    });
+
+    //TODO: Güncelleme yapmak için uygun hale getirmemiz gerek.
   }
 
   @override
@@ -74,7 +81,7 @@ class _SetDriverViewState extends State<SetDriverView> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Sürücü ekle"),
+        title: const Text("Sürücü düzenle"),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -95,7 +102,7 @@ class _SetDriverViewState extends State<SetDriverView> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   const Padding(
-                    padding: EdgeInsets.only(left: 20, right: 20),
+                    padding: EdgeInsets.only(left: 10, right: 10),
                     child: Text("Ehliyet geçerlilik tarihi:"),
                   ),
                   const SizedBox(
@@ -136,7 +143,7 @@ class _SetDriverViewState extends State<SetDriverView> {
                 phoneNumber: controllerPhoneNumber.text,
               ).toJson().toString());
           await FleetNetwork().updateDriverData(
-              widget.vehicleModel.driverID!,
+              widget.driverID!,
               DriverModel(
                 firstName: contollerDriverFirstName.text,
                 lastName: controllerDriverLastName.text,
