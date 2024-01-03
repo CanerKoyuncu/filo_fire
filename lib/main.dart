@@ -1,4 +1,3 @@
-import 'package:filo_fire/network/auth_operations.dart';
 
 import 'package:filo_fire/view/authanticate/Login/login_view.dart';
 import 'package:filo_fire/view/authanticate/forgot_password/forgot_password_view.dart';
@@ -69,7 +68,7 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
       ),
-      home: SplashScreen(),
+      home: const SplashScreen(),
     );
   }
 }

@@ -40,7 +40,7 @@ class _DriverViewState extends State<DriverView> {
                       .deleteDriverData(widget.carID.toString());
                   Navigator.pop(context);
                 },
-                icon: Icon(Icons.delete)),
+                icon: const Icon(Icons.delete)),
             IconButton(
               onPressed: () async {
                 //TODO: güncelleme yapılması gerekiyor.
@@ -67,7 +67,7 @@ class _DriverViewState extends State<DriverView> {
           children: [
             Row(
               children: [
-                Text("Adı: "),
+                const Text("Adı: "),
                 Text(snapshot.data!.firstName),
               ],
             ),
@@ -91,7 +91,7 @@ class _DriverViewState extends State<DriverView> {
             ),
             Row(
               children: [
-                Text("Telefon Numarası: "),
+                const Text("Telefon Numarası: "),
                 Text(snapshot.data!.phoneNumber),
               ],
             ),

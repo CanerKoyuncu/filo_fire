@@ -41,7 +41,7 @@ class _AddDriverViewState extends State<AddDriverView> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Sürücü ekle"),
+        title: const Text("Sürücü ekle"),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -64,8 +64,8 @@ class _AddDriverViewState extends State<AddDriverView> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20, right: 20),
+                  const Padding(
+                    padding: EdgeInsets.only(left: 20, right: 20),
                     child: Text("Ehliyet geçerlilik tarihi:"),
                   ),
                   const SizedBox(

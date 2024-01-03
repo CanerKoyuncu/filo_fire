@@ -127,8 +127,6 @@ class _CarInfoViewState extends State<CarInfoView>
               ElevatedButton(
                 onPressed: () async {
                   if (snapshot.data != null) {
-                    DriverModel? driverModel = await FleetNetwork()
-                        .getDriverWithID(widget.carData.driverID!);
                     Navigator.push(
                       context,
                       MaterialPageRoute(
